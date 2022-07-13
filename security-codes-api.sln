@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.API", "src\Downcast.SecurityCodes.API\Downcast.SecurityCodes.API.csproj", "{AB27795F-C37F-48FF-8899-99F4C0950156}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{329E7436-AE3D-423D-AE42-AD986CD62D87}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0018D701-DBA5-4C74-B562-F36942B87BD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{4908532E-C4A9-4AE7-B9F2-3868C7718666}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Repository", "src\Downcast.SecurityCodes.Repository\Downcast.SecurityCodes.Repository.csproj", "{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Manager", "src\Downcast.SecurityCodes.Manager\Downcast.SecurityCodes.Manager.csproj", "{9C517054-F7B5-4377-9890-C181D40400FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Model", "src\Downcast.SecurityCodes.Model\Downcast.SecurityCodes.Model.csproj", "{1508369C-8491-4559-B1AF-70A8CD5A6C22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB27795F-C37F-48FF-8899-99F4C0950156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB27795F-C37F-48FF-8899-99F4C0950156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB27795F-C37F-48FF-8899-99F4C0950156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB27795F-C37F-48FF-8899-99F4C0950156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C517054-F7B5-4377-9890-C181D40400FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C517054-F7B5-4377-9890-C181D40400FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C517054-F7B5-4377-9890-C181D40400FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C517054-F7B5-4377-9890-C181D40400FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AB27795F-C37F-48FF-8899-99F4C0950156} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
+		{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
+		{9C517054-F7B5-4377-9890-C181D40400FF} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
+		{1508369C-8491-4559-B1AF-70A8CD5A6C22} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
+	EndGlobalSection
+EndGlobal

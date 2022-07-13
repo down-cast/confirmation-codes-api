@@ -6,4 +6,5 @@ public interface ISecurityCodesManager
 {
     Task ValidateSecurityCode(ValidateSecurityCode code);
     Task Create(SecurityCodeInput securityCode);
+    Task<SecurityCode> GetByTarget(string target);
 }

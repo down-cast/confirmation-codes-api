@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 using Downcast.SecurityCodes.Manager;
 using Downcast.SecurityCodes.Model;
 
@@ -27,5 +29,11 @@ public class SecurityCodesController : ControllerBase
     public Task ValidateConfirmationCode(ValidateSecurityCode code)
     {
         return _manager.ValidateSecurityCode(code);
+    }
+
+    [HttpGet]
+    public Task<SecurityCode> GetSecurityCode([Required] [EmailAddress] string target)
+    {
+        return _manager.GetByTarget(target);
     }
 }

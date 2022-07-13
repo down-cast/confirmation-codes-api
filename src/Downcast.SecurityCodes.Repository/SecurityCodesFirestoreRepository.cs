@@ -33,43 +33,56 @@ public class SecurityCodesFirestoreRepository : ISecurityCodesRepository
 
     public async Task<string> Create(string code, string target)
     {
-        DocumentReference document = await _collection.AddAsync(new CreateSecurityCode
+        var codeData = new CreateSecurityCode
         {
             Code   = code,
             Target = target
-        }).ConfigureAwait(false);
-        _logger.LogDebug("Created security code with {SecurityCodeId}", document.Id);
-        return document.Id;
+        };
+        QuerySnapshot snapshot = await GetSnapshotByTarget(target).ConfigureAwait(false);
+        if (snapshot is { Count: > 0 } && snapshot.Documents[0] is { Exists: true } document)
+        {
+            await document.Reference.SetAsync(codeData, SetOptions.Overwrite).ConfigureAwait(false);
+            _logger.LogDebug("Updated security code with {SecurityCodeId}", document.Reference.Id);
+            return document.Reference.Id;
+        }
+
+        DocumentReference documentRef = await _collection.AddAsync(codeData).ConfigureAwait(false);
+
+        _logger.LogDebug("Created security code with {SecurityCodeId}", documentRef.Id);
+        return documentRef.Id;
     }
 
     public async Task<Model.SecurityCode> GetByTarget(string target)
     {
-        DocumentSnapshot document = await GetSnapshotByTarget(target).ConfigureAwait(false);
+        DocumentSnapshot document = await GetDocumentByTarget(target).ConfigureAwait(false);
         return _mapper.Map<Model.SecurityCode>(document.ConvertTo<SecurityCode>());
     }
 
     public async Task UpdateConfirmationDate(string target, DateTime date)
     {
-        DocumentSnapshot document = await GetSnapshotByTarget(target).ConfigureAwait(false);
+        DocumentSnapshot document = await GetDocumentByTarget(target).ConfigureAwait(false);
         WriteResult _ = await document.Reference.SetAsync(new Dictionary<string, object>
         {
-            {nameof(SecurityCode.ConfirmationDate), date}
+            { nameof(SecurityCode.ConfirmationDate), date }
         }, SetOptions.MergeAll).ConfigureAwait(false);
     }
 
-    private async Task<DocumentSnapshot> GetSnapshotByTarget(string target)
+    private async Task<DocumentSnapshot> GetDocumentByTarget(string target)
     {
-        QuerySnapshot snapshot = await _collection
-            .WhereEqualTo(nameof(SecurityCode.Target), target)
-            .Limit(1)
-            .GetSnapshotAsync()
-            .ConfigureAwait(false);
-
-        if (snapshot is not {Count: > 0} || snapshot.Documents[0] is not {Exists: true} document)
+        QuerySnapshot snapshot = await GetSnapshotByTarget(target).ConfigureAwait(false);
+        if (snapshot is not { Count: > 0 } || snapshot.Documents[0] is not { Exists: true } document)
         {
             throw new DcException(ErrorCodes.EntityNotFound, $"Could not find security code for target {target}");
         }
 
         return document;
+    }
+
+    private Task<QuerySnapshot> GetSnapshotByTarget(string target)
+    {
+        return _collection
+            .WhereEqualTo(nameof(SecurityCode.Target), target)
+            .Limit(1)
+            .GetSnapshotAsync();
     }
 }

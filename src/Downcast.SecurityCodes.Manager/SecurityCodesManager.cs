@@ -11,12 +11,14 @@ namespace Downcast.SecurityCodes.Manager;
 public class SecurityCodesManager : ISecurityCodesManager
 {
     private readonly ISecurityCodesRepository _repository;
-    private readonly IOptions<SecurityCodesOptions> _options;
-
+    private readonly int _upperLimit;
+    private readonly string _format;
+    
     public SecurityCodesManager(ISecurityCodesRepository repository, IOptions<SecurityCodesOptions> options)
     {
         _repository = repository;
-        _options    = options;
+        _upperLimit = int.Parse(string.Concat(Enumerable.Repeat('9', options.Value.CodeLength)));
+        _format     = string.Concat(Enumerable.Repeat('0', options.Value.CodeLength));
     }
 
     public async Task ValidateSecurityCode(ValidateSecurityCode code)
@@ -24,7 +26,7 @@ public class SecurityCodesManager : ISecurityCodesManager
         SecurityCode securityCode = await _repository.GetByTarget(code.Target).ConfigureAwait(false);
         if (!securityCode.Code.Equals(code.Code, StringComparison.Ordinal))
         {
-            throw new DcException(ErrorCodes.EntityNotFound, "Invalid security code");
+            throw new DcException(ErrorCodes.InvalidSecurityCode);
         }
 
         await _repository.UpdateConfirmationDate(code.Target, DateTime.UtcNow).ConfigureAwait(false);
@@ -32,14 +34,16 @@ public class SecurityCodesManager : ISecurityCodesManager
 
     public Task Create(SecurityCodeInput securityCode)
     {
-        return _repository.Create(GenerateRandomNumber(_options.Value.CodeLength), securityCode.Target);
+        return _repository.Create(GenerateRandomNumber(), securityCode.Target);
     }
 
-
-    private static string GenerateRandomNumber(int digits)
+    public Task<SecurityCode> GetByTarget(string target)
     {
-        var upperLimit = int.Parse(string.Concat(Enumerable.Repeat('9', digits)));
-        var format = string.Concat(Enumerable.Repeat('0', digits));
-        return RandomNumberGenerator.GetInt32(0, upperLimit).ToString(format);
+        return _repository.GetByTarget(target);
+    }
+
+    private string GenerateRandomNumber()
+    {
+        return RandomNumberGenerator.GetInt32(0, _upperLimit).ToString(_format);
     }
 }

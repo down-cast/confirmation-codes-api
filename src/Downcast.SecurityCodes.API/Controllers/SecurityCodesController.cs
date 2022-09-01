@@ -18,6 +18,11 @@ public class SecurityCodesController : ControllerBase
         _manager = manager;
     }
 
+    private static string NormalizeTarget(string target)
+    {
+        return target.ToLower();
+    }
+
     /// <summary>
     /// Creates a new 6 digit security code associated with a target email address.
     /// </summary>
@@ -27,7 +32,11 @@ public class SecurityCodesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult<SecurityCode>> CreateSecurityCode(SecurityCodeInput code)
     {
-        SecurityCode createdSecurityCode = await _manager.Create(code).ConfigureAwait(false);
+        SecurityCode createdSecurityCode = await _manager.Create(new SecurityCodeInput()
+        {
+            Target = NormalizeTarget(code.Target)
+        }).ConfigureAwait(false);
+
         return CreatedAtAction(nameof(GetSecurityCode), new { code.Target }, createdSecurityCode);
     }
 
@@ -41,7 +50,11 @@ public class SecurityCodesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task ValidateSecurityCode(ValidateSecurityCode code)
     {
-        return _manager.ValidateSecurityCode(code);
+        return _manager.ValidateSecurityCode(new ValidateSecurityCode()
+        {
+            Code   = code.Code,
+            Target = NormalizeTarget(code.Target)
+        });
     }
 
 
@@ -55,7 +68,7 @@ public class SecurityCodesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public Task<SecurityCode> GetSecurityCode([Required] [EmailAddress] string target)
     {
-        return _manager.Get(target);
+        return _manager.Get(NormalizeTarget(target));
     }
 
     /// <summary>
@@ -67,6 +80,6 @@ public class SecurityCodesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public Task DeleteSecurityCode([Required] [EmailAddress] string target)
     {
-        return _manager.Delete(target);
+        return _manager.Delete(NormalizeTarget(target));
     }
 }

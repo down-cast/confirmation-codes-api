@@ -21,7 +21,7 @@ public class SecurityCodesTests : BaseTestClass
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
         response.Content.Should().NotBeNull();
-        response.Content!.Target.Should().Be(securityCode.Target);
+        response.Content!.Target.Should().Be(securityCode.Target.ToLower());
         response.Content!.Code.Should().HaveLength(CodeLength);
     }
 
@@ -63,7 +63,6 @@ public class SecurityCodesTests : BaseTestClass
 
         ApiResponse<SecurityCode> getCodeResponse =
             await Client.GetSecurityCode(securityCode.Target).ConfigureAwait(false);
-
         getCodeResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
@@ -141,7 +140,7 @@ public class SecurityCodesTests : BaseTestClass
 
         validateCodeResponse.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
-    
+
     [Fact]
     public async Task ValidateCode_Non_Existent_Target()
     {

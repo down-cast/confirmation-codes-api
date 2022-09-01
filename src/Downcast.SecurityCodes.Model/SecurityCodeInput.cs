@@ -6,5 +6,5 @@ public class SecurityCodeInput
 {
     [Required]
     [EmailAddress]
-    public string Target { get; init; } = null!;
+    public string Target { get; set; } = null!;
 }

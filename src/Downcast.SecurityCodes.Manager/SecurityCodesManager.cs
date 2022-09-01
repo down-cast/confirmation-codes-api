@@ -23,7 +23,7 @@ public class SecurityCodesManager : ISecurityCodesManager
 
     public async Task ValidateSecurityCode(ValidateSecurityCode code)
     {
-        SecurityCode securityCode = await _repository.Get(code.Target).ConfigureAwait(false);
+        SecurityCode securityCode = await Get(code.Target).ConfigureAwait(false);
         if (!securityCode.Code.Equals(code.Code, StringComparison.Ordinal))
         {
             throw new DcException(ErrorCodes.InvalidSecurityCode);

@@ -3,11 +3,20 @@ using Google.Cloud.Firestore;
 namespace Downcast.SecurityCodes.Repository.Domain;
 
 [FirestoreData]
-internal class SecurityCode : CreateSecurityCode
+internal class SecurityCode
 {
-    [FirestoreDocumentUpdateTimestamp]
-    public DateTime UpdatedDate { get; init; }
+    [FirestoreDocumentId]
+    public string Target { get; init; } = null!;
 
     [FirestoreProperty]
-    public DateTime ConfirmationDate { get; init; }
+    public string Code { get; init; } = null!;
+
+    [FirestoreDocumentUpdateTimestamp]
+    public DateTime Updated { get; init; }
+
+    [FirestoreProperty]
+    public DateTime Created { get; init; }
+
+    [FirestoreProperty]
+    public DateTime? ConfirmationDate { get; init; }
 }

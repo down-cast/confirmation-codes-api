@@ -5,6 +5,7 @@ namespace Downcast.SecurityCodes.Manager;
 public interface ISecurityCodesManager
 {
     Task ValidateSecurityCode(ValidateSecurityCode code);
-    Task Create(SecurityCodeInput securityCode);
-    Task<SecurityCode> GetByTarget(string target);
+    Task<SecurityCode> Create(SecurityCodeInput securityCode);
+    Task<SecurityCode> Get(string target);
+    Task Delete(string target);
 }

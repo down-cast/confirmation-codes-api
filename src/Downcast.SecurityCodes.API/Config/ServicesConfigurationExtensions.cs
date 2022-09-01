@@ -19,6 +19,7 @@ public static class ServicesConfigurationExtensions
     {
         builder.AddMapster();
         builder.Services.AddSingleton<ISecurityCodesManager, SecurityCodesManager>();
+        
         builder.Services
             .AddOptions<SecurityCodesOptions>()
             .Bind(builder.Configuration.GetSection(SecurityCodesOptions.SectionName))

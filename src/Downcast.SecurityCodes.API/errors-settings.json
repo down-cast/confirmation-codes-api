@@ -15,6 +15,26 @@
         "Message": "The requested entity was not found",
         "Detail": "Make sure the id is valid",
         "StatusCode": "NotFound"
+      },
+      "AuthenticationFailed": {
+        "Message": "Authentication failed",
+        "Detail": "The username or password is incorrect",
+        "StatusCode": "Unauthorized"
+      },
+      "EmailAlreadyTaken": {
+        "Message": "Email already taken",
+        "Detail": "The email is already taken by another user",
+        "StatusCode": "Conflict"
+      },
+      "DatabaseError": {
+        "Message": "Database error",
+        "Detail": "Database operation failed, check the logs for more details, most likely id was not found",
+        "StatusCode": "NotFound"
+      },
+      "InvalidSecurityCode": {
+        "Message": "Invalid security code",
+        "Detail": "The security code is not valid",
+        "StatusCode": "Unauthorized"
       }
     }
   }

@@ -1,0 +1,22 @@
+name: Publish NuGets
+
+# Controls when the workflow will run
+on:
+  workflow_run:
+    workflows: [ "Build and run tests" ]
+    types: [ completed ]
+    branches: [ '**' ]
+jobs:
+  publish_nuget:
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job 
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add Org Nuget Source
+        run: dotnet nuget add source --username mihail-brinza --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/down-cast/index.json"
+      - name: Package Client SDK
+        run: dotnet pack -c Release -o . client-sdk/Downcast.SecurityCodes.Client/Downcast.SecurityCodes.Client.csproj
+      - name: Package Client SDK DI
+        run: dotnet pack -c Release -o . client-sdk/Downcast.SecurityCodes.Client.DependencyInjection/Downcast.SecurityCodes.Client.DependencyInjection.csproj
+      - name: Publish Nugets
+        run: dotnet nuget push *.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s "github" --skip-duplicate

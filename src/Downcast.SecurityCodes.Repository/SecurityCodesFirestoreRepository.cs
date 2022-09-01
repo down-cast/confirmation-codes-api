@@ -3,6 +3,9 @@ using Downcast.SecurityCodes.Model;
 using Downcast.SecurityCodes.Repository.Domain;
 using Downcast.SecurityCodes.Repository.Options;
 
+using Firestore.Typed.Client;
+using Firestore.Typed.Client.Extensions;
+
 using Google.Cloud.Firestore;
 
 using MapsterMapper;
@@ -16,7 +19,8 @@ namespace Downcast.SecurityCodes.Repository;
 
 public class SecurityCodesFirestoreRepository : ISecurityCodesRepository
 {
-    private readonly CollectionReference _collection;
+    private readonly TypedCollectionReference<SecurityCode> _collection;
+    private readonly FirestoreDb _firestoreDb;
     private readonly ILogger<SecurityCodesFirestoreRepository> _logger;
     private readonly IMapper _mapper;
 
@@ -26,63 +30,64 @@ public class SecurityCodesFirestoreRepository : ISecurityCodesRepository
         ILogger<SecurityCodesFirestoreRepository> logger,
         IMapper mapper)
     {
-        _logger     = logger;
-        _mapper     = mapper;
-        _collection = firestoreDb.Collection(options.Value.Collection);
+        _firestoreDb = firestoreDb;
+        _logger      = logger;
+        _mapper      = mapper;
+        _collection  = firestoreDb.TypedCollection<SecurityCode>(options.Value.Collection);
     }
 
-    public async Task<string> Create(string code, string target)
+
+    public async Task<Model.SecurityCode> Create(string code, string target)
     {
-        var codeData = new CreateSecurityCode
+        SecurityCode securityCodeToCreate = CreateSecurityCode(code, target);
+        await _collection.Document(target).SetAsync(securityCodeToCreate, SetOptions.Overwrite).ConfigureAwait(false);
+        _logger.LogInformation("Created security for target {Target}", target);
+        return await Get(target).ConfigureAwait(false);
+    }
+
+    private static SecurityCode CreateSecurityCode(string code, string target)
+    {
+        return new SecurityCode
         {
-            Code   = code,
-            Target = target
+            Code             = code,
+            Target           = target,
+            ConfirmationDate = null,
+            Created          = DateTime.UtcNow
         };
-        QuerySnapshot snapshot = await GetSnapshotByTarget(target).ConfigureAwait(false);
-        if (snapshot is { Count: > 0 } && snapshot.Documents[0] is { Exists: true } document)
-        {
-            await document.Reference.SetAsync(codeData, SetOptions.Overwrite).ConfigureAwait(false);
-            _logger.LogDebug("Updated security code with {SecurityCodeId}", document.Reference.Id);
-            return document.Reference.Id;
-        }
-
-        DocumentReference documentRef = await _collection.AddAsync(codeData).ConfigureAwait(false);
-
-        _logger.LogDebug("Created security code with {SecurityCodeId}", documentRef.Id);
-        return documentRef.Id;
     }
 
-    public async Task<Model.SecurityCode> GetByTarget(string target)
+    public async Task<Model.SecurityCode> Get(string target)
     {
-        DocumentSnapshot document = await GetDocumentByTarget(target).ConfigureAwait(false);
-        return _mapper.Map<Model.SecurityCode>(document.ConvertTo<SecurityCode>());
+        TypedDocumentSnapshot<SecurityCode> document = await GetSnapshotByTarget(target).ConfigureAwait(false);
+        return _mapper.Map<Model.SecurityCode>(document.RequiredObject);
     }
 
     public async Task UpdateConfirmationDate(string target, DateTime date)
     {
-        DocumentSnapshot document = await GetDocumentByTarget(target).ConfigureAwait(false);
-        WriteResult _ = await document.Reference.SetAsync(new Dictionary<string, object>
-        {
-            { nameof(SecurityCode.ConfirmationDate), date }
-        }, SetOptions.MergeAll).ConfigureAwait(false);
+        TypedDocumentSnapshot<SecurityCode> document = await GetSnapshotByTarget(target).ConfigureAwait(false);
+
+        UpdateDefinition<SecurityCode> setOptions = new UpdateDefinition<SecurityCode>()
+            .Set(code => code.ConfirmationDate, date);
+        WriteResult _ = await document.Reference.UpdateAsync(setOptions).ConfigureAwait(false);
     }
 
-    private async Task<DocumentSnapshot> GetDocumentByTarget(string target)
+    public Task Delete(string target)
     {
-        QuerySnapshot snapshot = await GetSnapshotByTarget(target).ConfigureAwait(false);
-        if (snapshot is not { Count: > 0 } || snapshot.Documents[0] is not { Exists: true } document)
+        return _collection.Document(target).DeleteAsync();
+    }
+
+    private async Task<TypedDocumentSnapshot<SecurityCode>> GetSnapshotByTarget(string target)
+    {
+        TypedDocumentSnapshot<SecurityCode> snapshot = await _collection
+            .Document(target)
+            .GetSnapshotAsync()
+            .ConfigureAwait(false);
+
+        if (!snapshot.Exists)
         {
             throw new DcException(ErrorCodes.EntityNotFound, $"Could not find security code for target {target}");
         }
 
-        return document;
-    }
-
-    private Task<QuerySnapshot> GetSnapshotByTarget(string target)
-    {
-        return _collection
-            .WhereEqualTo(nameof(SecurityCode.Target), target)
-            .Limit(1)
-            .GetSnapshotAsync();
+        return snapshot;
     }
 }

@@ -19,6 +19,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Mana
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Model", "src\Downcast.SecurityCodes.Model\Downcast.SecurityCodes.Model.csproj", "{1508369C-8491-4559-B1AF-70A8CD5A6C22}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client-sdk", "client-sdk", "{CFD1BC62-8BFE-432A-9694-EC5723275D5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Client", "client-sdk\Downcast.SecurityCodes.Client\Downcast.SecurityCodes.Client.csproj", "{CB83D4DC-1E45-4880-9964-90C8DA9C128C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Tests.Utils", "test\Downcast.SecurityCodes.Tests.Utils\Downcast.SecurityCodes.Tests.Utils.csproj", "{F8C6180C-6C58-4D8F-AD04-726835B718DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Client.DependencyInjection", "client-sdk\Downcast.SecurityCodes.Client.DependencyInjection\Downcast.SecurityCodes.Client.DependencyInjection.csproj", "{E39525AB-8C13-4FAA-B475-3081B13EA05C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Downcast.SecurityCodes.Tests", "test\Downcast.SecurityCodes.Tests\Downcast.SecurityCodes.Tests.csproj", "{EEE4E2C7-369B-439E-A413-44E268364C9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{2D470EB1-4047-477D-8398-5FD56ED16081}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\publish_nuget.yml = .github\workflows\publish_nuget.yml
+		.github\workflows\build_and_test.yml = .github\workflows\build_and_test.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,11 +57,32 @@ Global
 		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1508369C-8491-4559-B1AF-70A8CD5A6C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB83D4DC-1E45-4880-9964-90C8DA9C128C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB83D4DC-1E45-4880-9964-90C8DA9C128C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB83D4DC-1E45-4880-9964-90C8DA9C128C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB83D4DC-1E45-4880-9964-90C8DA9C128C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8C6180C-6C58-4D8F-AD04-726835B718DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8C6180C-6C58-4D8F-AD04-726835B718DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8C6180C-6C58-4D8F-AD04-726835B718DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8C6180C-6C58-4D8F-AD04-726835B718DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E39525AB-8C13-4FAA-B475-3081B13EA05C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E39525AB-8C13-4FAA-B475-3081B13EA05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E39525AB-8C13-4FAA-B475-3081B13EA05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E39525AB-8C13-4FAA-B475-3081B13EA05C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE4E2C7-369B-439E-A413-44E268364C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE4E2C7-369B-439E-A413-44E268364C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE4E2C7-369B-439E-A413-44E268364C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE4E2C7-369B-439E-A413-44E268364C9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AB27795F-C37F-48FF-8899-99F4C0950156} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
 		{7C60C2CF-95C2-43E1-8E8A-1896A20EC63A} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
 		{9C517054-F7B5-4377-9890-C181D40400FF} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
 		{1508369C-8491-4559-B1AF-70A8CD5A6C22} = {329E7436-AE3D-423D-AE42-AD986CD62D87}
+		{CB83D4DC-1E45-4880-9964-90C8DA9C128C} = {CFD1BC62-8BFE-432A-9694-EC5723275D5A}
+		{F8C6180C-6C58-4D8F-AD04-726835B718DE} = {0018D701-DBA5-4C74-B562-F36942B87BD6}
+		{E39525AB-8C13-4FAA-B475-3081B13EA05C} = {CFD1BC62-8BFE-432A-9694-EC5723275D5A}
+		{EEE4E2C7-369B-439E-A413-44E268364C9F} = {0018D701-DBA5-4C74-B562-F36942B87BD6}
+		{2D470EB1-4047-477D-8398-5FD56ED16081} = {4908532E-C4A9-4AE7-B9F2-3868C7718666}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IsPackable>true</IsPackable>
+        <PackageId>Downcast.SecurityCodes.Client.DependencyInjection</PackageId>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Authors>Mihail Brinza</Authors>
+        <Description>
+            Http Client to access Security Codes API
+        </Description>
+        <RepositoryUrl>https://github.com/down-cast/security-codes-api</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>security codes</PackageTags>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Refit" Version="6.3.2"/>
+    </ItemGroup>
+
+</Project>

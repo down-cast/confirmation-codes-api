@@ -8,7 +8,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfig();
 
 builder.AddSecurityCodesApiServices();
 builder.AddSerilog();
@@ -25,6 +25,5 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseForwardedHeaders();
 app.MapControllers();
-
 
 app.Run();

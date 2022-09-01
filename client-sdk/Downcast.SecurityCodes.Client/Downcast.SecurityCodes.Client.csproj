@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <IsPackable>true</IsPackable>
-        <PackageId>Downcast.SecurityCodes.Client.DependencyInjection</PackageId>
+        <PackageId>Downcast.SecurityCodes.Client</PackageId>
         <PackageVersion>0.0.1</PackageVersion>
         <Authors>Mihail Brinza</Authors>
         <Description>
